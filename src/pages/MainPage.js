@@ -27,7 +27,10 @@ export default function MainPage() {
                 </div>
               ) : (
                 commonFollowerList.map((userid) => (
-                  <li className="list-group-item d-flex justify-content-between border border-dark">
+                  <li
+                    key={userid}
+                    className="list-group-item d-flex justify-content-between border border-dark"
+                  >
                     {userid}
                   </li>
                 ))
