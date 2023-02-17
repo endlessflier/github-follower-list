@@ -1,0 +1,17 @@
+# dependencies
+/node_modules
+
+# production
+/build
+
+# local cache
+.eslintcache
+
+# misc
+.DS_Store
+.env
+npm-debug.log
+yarn-error.log
+.yarnrc
+.yarn
+.vscode

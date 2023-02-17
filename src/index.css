@@ -1,0 +1,70 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  box-shadow: 0 0 0 30px white inset !important;
+}
+
+div {
+  user-select: none;
+}
+
+.input-text:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.input-box {
+  border-radius: 0.25rem;
+  outline: 0.1rem solid #000;
+}
+
+.input-box:focus-within {
+  outline: 0.25rem solid #bfdeff;
+}
+
+.outline {
+  outline: #000 solid 0.2rem;
+}
+
+.error {
+  color: #f00;
+  outline: 0.1rem solid #f00 !important;
+}
+
+.btn-disabled {
+  opacity: 0.5 !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.btn-hover:hover {
+  outline: 0.2rem solid #bfdeff;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+}
+
+.icon:hover {
+  background-color: #0d6efd16;
+  cursor: pointer;
+}
