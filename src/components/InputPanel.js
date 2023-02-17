@@ -8,26 +8,29 @@ export default function InputPanel({
   isLoading,
   setIsLoading,
 }) {
-  const [firstUser, setFirstUser] = useState("wolever");
-  const [secondUser, setSecondUser] = useState("shazow");
+  const [gitUsers, setGitUsers] = useState([
+    { label: "First User", userid: "wolever" },
+    { label: "Second User", userid: "shazow" },
+  ]);
   const pageStatus = useMemo(() => {
-    const firstUserError = !getValidateGitHubID(firstUser);
-    const secondUserError = !getValidateGitHubID(secondUser);
+    const userIdErrors = gitUsers.map(
+      ({ userid }) => !getValidateGitHubID(userid)
+    );
     return {
-      firstUserError,
-      secondUserError,
-      buttonDisabled: isLoading || firstUserError || secondUserError,
+      userIdError: userIdErrors,
+      buttonDisabled: isLoading || userIdErrors.some((hasError) => hasError),
     };
-  }, [firstUser, secondUser, isLoading]);
+  }, [gitUsers, isLoading]);
 
-  const handleGetCommongList = async (e) => {
+  const handleGetCommonList = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    const firstFollowers = await gitApi.getAllFollowerList(firstUser);
-    const secondFollowers = await gitApi.getAllFollowerList(secondUser);
+    const followers = await Promise.all(
+      gitUsers.map(({ userid }) => gitApi.getAllFollowerList(userid))
+    );
 
-    const commonList = firstFollowers.filter((userid) =>
-      secondFollowers.includes(userid)
+    const commonList = followers[0].filter((userid) =>
+      followers[1].includes(userid)
     );
     setCommonFollowerList(commonList);
     setIsLoading(false);
@@ -38,30 +41,30 @@ export default function InputPanel({
       <div className="py-4 text-center">
         <h1>GitHub Users</h1>
       </div>
-      <form onSubmit={handleGetCommongList}>
-        <Textfield
-          className="mb-3"
-          type="text"
-          label="First GitUser"
-          icon={<i className="bi bi-person-fill"></i>}
-          value={firstUser}
-          placeholder="GitHub account id"
-          maxLength={MAX_ID_LENGTH}
-          errorText={pageStatus.firstUserError ? "Should be valid user!" : ""}
-          onChange={(e) => setFirstUser(e.target.value)}
-        />
-        <Textfield
-          className="mb-5"
-          type="text"
-          label="Second GitUser"
-          icon={<i className="bi bi-person-fill"></i>}
-          value={secondUser}
-          maxLength={MAX_ID_LENGTH}
-          placeholder="GitHub account id"
-          errorText={pageStatus.secondUserError ? "Should be valid user!" : ""}
-          onChange={(e) => setSecondUser(e.target.value)}
-        />
-        <div className="d-grid">
+      <form onSubmit={handleGetCommonList}>
+        {gitUsers.map(({ userid, label }, userIndex) => (
+          <Textfield
+            key={user.userid}
+            className="mb-3"
+            type="text"
+            label={label}
+            icon={<i className="bi bi-person-fill"></i>}
+            value={userid}
+            placeholder="GitHub account id"
+            maxLength={MAX_ID_LENGTH}
+            errorText={pageStatus.firstUserError ? "Should be valid user!" : ""}
+            onChange={(e) =>
+              setGitUsers(
+                gitUsers.map((user, index) =>
+                  index === userIndex
+                    ? { ...user, userid: e.target.value }
+                    : user
+                )
+              )
+            }
+          />
+        ))}
+        <div className="d-grid mt-2">
           <button
             type="submit"
             disabled={pageStatus.buttonDisabled}
